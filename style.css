@@ -1,0 +1,97 @@
+body {
+    font-family: "Noto Sans", sans-serif;
+}
+
+
+/* H E A D E R */
+.st-emotion-cache-1n4a2v9 {
+    border-radius: 0px 0px 20px 20px;
+    background-color: #020b15;
+}
+
+
+/* N A V    B U T T O N S */
+button[kind="secondary"] {
+    background-color: #020b15;
+    box-shadow: #071b33 0px 1px 15px;
+}
+
+
+/* N A V    D R O P D O W N */
+.st-e3 {
+    background-color: #020b15
+}
+.st-dm {
+    background-color: #020b15
+}
+
+
+/* E X P A N D E R */
+.st-emotion-cache-z22cl0 {
+    background-color: #020b15;
+    box-shadow: #071b33 1px 3px 50px 10px
+}
+.acc_info1 {
+    color:rgb(85, 168, 240);
+    font-family: "Fredoka", sans-serif;
+}
+.acc_info2 {
+    color:rgb(85, 168, 240);
+    font-family: "Fredoka", sans-serif;
+    font-size: large;
+    font-weight: bold;
+}
+
+
+
+/* C O N T A I N E R */
+.st-emotion-cache-16h9saz {
+    background-color: #020b15;
+    box-shadow: #071b33 1px 3px 50px 10px
+}
+
+
+/* L O G O */
+.logo {
+    text-align: center;
+    color: #071b33;
+    border-radius: 20px;
+    width: max-content;
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(85, 168, 240);
+    font-family: "Fredoka", sans-serif;
+    text-shadow: 2px 2px 20px #071b33;
+}
+
+
+/* P R O M P T    I N P U T */
+.st-cq {
+    background-color: black;
+    border-color: #071b33;
+}
+
+
+/* U P L O A D E R    B U T T O N */
+.st-emotion-cache-16y7lrw {
+    background-color: black;
+    border: #071b33 1px solid;
+}
+
+
+/* G E N E R A T I O N    B U T T O N */
+button[kind="primary"] {
+    background-color: rgb(85, 168, 240);
+    border-color: rgb(85, 168, 240);
+    color: #071b33;
+}
+
+
+p {
+    font-family: "Noto Sans", sans-serif;
+}
+strong {
+    font-family: "Noto Sans", sans-serif;
+}
