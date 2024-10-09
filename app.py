@@ -12,6 +12,14 @@ from app_prompt_functions import *
 
 st.set_page_config(page_title="CosmoPen", page_icon="logo.png", layout="wide", initial_sidebar_state="collapsed", menu_items=None)
 
+
+
+
+# # # # #    L O A D    F O N T S    # # # # #
+
+# N O T O    S A N S
+# M A L I
+# F R E D O K A
 st.markdown(
     f"""
 <head>
@@ -33,25 +41,46 @@ st.markdown(
 </head>
     """,unsafe_allow_html=True)
 
+
+
+
+# # # # #    S T Y L E    C S S    # # # # #
 with open( "style.css" ) as css:
     st.markdown( f'<style>{css.read()}</style>' , unsafe_allow_html= True)
 
 
 
-#primaryColor="#000EEF"
-#backgroundColor="#FFFFFF"
-#secondaryBackgroundColor = "#EFF3F6"
-#textColor = "#000000"
 
 
+# # # # #    G O O G L E    G E M I N I    A P I    # # # # #
 GOOGLE_API_KEY = 'AIzaSyDmF4D2f_ibz6UZi_sFZyydkSmUrz7x8_k'
 genai.configure(api_key=GOOGLE_API_KEY)
 
-model = genai.GenerativeModel('gemini-1.0-pro')
+
+
+
+# # # # #    G E M I N I    M O D E L S    # # # # #
+
+# S M A R T E S T
+# FAST AND VERSATILE PERFORMANCE ACROSS A DIVERSE VARIETY OF TASKS
 modelx = genai.GenerativeModel('gemini-1.5-flash')
 
+# P R E - G E N    F L A G S H I P
+# NATURAL LANGUAGE TASKS, TEXT AND CODE CHAT, AND CODE GENERATION
+model = genai.GenerativeModel('gemini-1.0-pro')
+
+# F A S T E S T
+# HIGH VOLUME AND LOWER INTELLIGENCE TASKS
+modelz = genai.GenerativeModel('gemini-1.5-flash-8b')
+
+
+
+# # # # #    V A L I D A T I O N    F O R    G E N E R A T I O N    # # # # #
 valid = False
 
+
+
+# # # # #    C O N N E C T I N G    T O    D A T A B A S E    # # # # #
 connection = mysql.connector.connect(
   host = "gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
   port = 4000,
@@ -63,22 +92,12 @@ connection = mysql.connector.connect(
   ssl_verify_identity = True
 )
 
-USERS = {
-    "user1": ['Basic',240, 1001],
-    "user2": ['Plus', 240, 1002],
-    "user3": ['Advanced', 240, 1003],
-    "user4": ['Basic', 240, 1004],
-    "user5": ['Plus', 240, 1005],
-    "user6": ['Plus', 240, 1006],
-    "user7": ['Advanced', 240, 1007],
-    "user8": ['Advanced', 240, 1008],
-    "user9": ['Plus', 240, 1009],
-    "user10": ['Basic', 240, 1010],   
-}
 
 
 
+# # # # #    D A T A B A S E    F U N C T I O N S    # # # # #
 
+# C H E C K    I F    E M A I L    E X I S T S
 def email_exists(connection, email):
     cursor = connection.cursor()
     sql = "SELECT 1 FROM users WHERE email = %s"
@@ -87,8 +106,8 @@ def email_exists(connection, email):
     cursor.execute(sql, values)
     result = cursor.fetchone()
 
-    return bool(result)  # True if a row was found, False otherwise
-
+    return bool(result)
+# G E T    P I L O T    I D    B Y    E M A I L
 def get_pilot_id_by_email(connection, email):
     cursor = connection.cursor()
     sql = "SELECT pilot_id FROM users WHERE email = %s" 
@@ -97,8 +116,8 @@ def get_pilot_id_by_email(connection, email):
     cursor.execute(sql, values)
     result = cursor.fetchone()
 
-    return result[0] if result else None  # If a result was found, return the pilot_id, otherwise return None
-
+    return result[0] if result else None
+# G E T    T I E R    B Y    E M A I L
 def get_tier_by_email(connection, email):
     cursor = connection.cursor()
     sql = "SELECT tier FROM users WHERE email = %s" 
@@ -107,9 +126,8 @@ def get_tier_by_email(connection, email):
     cursor.execute(sql, values)
     result = cursor.fetchone()
 
-    return result[0] if result else None  # If a result was found, return the tier, otherwise return None
-
-
+    return result[0] if result else None
+# C H E C K    C R E D I T    B Y    E M A I L
 def check_credit(connection, email):
     """Checks and prints the daily_remaining and total_remaining rate limits 
        for a given email on the CURRENT date.
@@ -127,11 +145,11 @@ def check_credit(connection, email):
     result = cursor.fetchone()
 
     if result:
-        CREDIT = result[0]  # Extract the first element from the tuple
+        CREDIT = result[0]
         return CREDIT
     else:
         return "Error: No rate limit information found"
-    
+# D E C R E A S E    1    C R E D I T    B Y    E M A I L
 def decrease_credit_1(connection, email):
     cursor = connection.cursor()
     sql = "UPDATE users SET credit = credit - 1 WHERE email = %s"
@@ -139,12 +157,13 @@ def decrease_credit_1(connection, email):
 
     try:
         cursor.execute(sql, values)
-        connection.commit()  # Important to save the changes
+        connection.commit()
         return True
     except Exception as e:
         print(f"Error decreasing credit: {e}")
-        connection.rollback()  # Revert changes if an error occurred
+        connection.rollback()
         return False
+# D E C R E A S E    2    C R E D I T    B Y    E M A I L
 def decrease_credit_2(connection, email):
     cursor = connection.cursor()
     sql = "UPDATE users SET credit = credit - 2 WHERE email = %s"
@@ -152,12 +171,13 @@ def decrease_credit_2(connection, email):
 
     try:
         cursor.execute(sql, values)
-        connection.commit()  # Important to save the changes
+        connection.commit()
         return True
     except Exception as e:
         print(f"Error decreasing credit: {e}")
-        connection.rollback()  # Revert changes if an error occurred
+        connection.rollback()
         return False
+# D E C R E A S E    3    C R E D I T    B Y    E M A I L
 def decrease_credit_3(connection, email):
     cursor = connection.cursor()
     sql = "UPDATE users SET credit = credit - 3 WHERE email = %s"
@@ -165,51 +185,28 @@ def decrease_credit_3(connection, email):
 
     try:
         cursor.execute(sql, values)
-        connection.commit()  # Important to save the changes
+        connection.commit()
         return True
     except Exception as e:
         print(f"Error decreasing credit: {e}")
-        connection.rollback()  # Revert changes if an error occurred
+        connection.rollback()
         return False
-    
+# I N S E R T    P R O M P T    I N T O    H I S T O R Y
 def insert_prompt_history(connection, email, prompt):
-    """Inserts an email and prompt into a table named 'history'.
-
-    Args:
-        connection: The database connection object.
-        email (str): The email address to insert.
-        prompt (str): The prompt text to insert.
-
-    Returns:
-        bool: True if the insertion was successful, False otherwise.
-    """
     try:
         cursor = connection.cursor()
         sql = "INSERT INTO history (email, prompt) VALUES (%s, %s)"
         values = (email, prompt)
         cursor.execute(sql, values)
-        connection.commit()  # Save the changes
+        connection.commit()
         return True
 
     except Exception as e:
         print(f"Error inserting into history: {e}")
-        connection.rollback()  # Revert changes if an error occurred
+        connection.rollback()
         return False
-
+# G E T    R E C E N T    P R O M P T S    B Y    E M A I L
 def get_recent_prompts(connection, email, limit=10):
-    """Retrieves the most recent prompts for a given email from the 'history' table.
-
-    Args:
-        connection: The database connection object.
-        email (str): The email address to retrieve prompts for.
-        limit (int, optional): The maximum number of prompts to retrieve. 
-                               Defaults to 20.
-
-    Returns:
-        list: A list of strings representing the retrieved prompts, 
-              or an empty list if none are found.
-    """
-
     try:
         cursor = connection.cursor()
         sql = """
@@ -223,17 +220,17 @@ def get_recent_prompts(connection, email, limit=10):
         cursor.execute(sql, values)
         results = cursor.fetchall()
 
-        # Extract prompts from the result tuples
         prompts = [row[0] for row in results] 
         return prompts
 
     except Exception as e:
         print(f"Error retrieving prompts: {e}")
-        return []  # Return an empty list in case of an error
-    
+        return []
 
-    
 
+
+
+# # # # #    L O G I N    P A G E    # # # # #
 def login_page():
     st.title("Welcome to CosmoPen")
     with st.container(border=True):
@@ -241,12 +238,15 @@ def login_page():
         if st.button("Login"):
             email_to_check = email
             if email_exists(connection, email_to_check):
-                st.session_state.email = email  # Store name in session state
-                st.session_state.page = "two"  # Navigate to page two
+                st.session_state.email = email
+                st.session_state.page = "two"
             else:
                 st.warning("Invalid Email")
 
 
+
+
+# # # # #    D A S H B O A R D    P A G E    # # # # #
 def dashboard():
     if "email" in st.session_state:
         EMAIL = st.session_state.email
@@ -260,17 +260,10 @@ def dashboard():
     return EMAIL, PILOT_ID, CREDIT, TIER
 
 
+
+
+# # # # #    F O R    D A T A    P R O M P T    (A I    S A N D B O X)    # # # # #
 def READ_ROWS(uploaded_file, num_rows=250):
-    """Reads the top 'num_rows' from various file types using pandas.
-
-    Args:
-        uploaded_file (st.UploadedFile): The uploaded file object from Streamlit.
-        num_rows (int, optional): The number of rows to read. Defaults to 2500.
-
-    Returns:
-        pandas.DataFrame or None: A DataFrame containing the top rows,
-                                   or None if an error occurs.
-    """
     try:
         file_extension = uploaded_file.name.split(".")[-1].lower() 
 
@@ -289,24 +282,22 @@ def READ_ROWS(uploaded_file, num_rows=250):
     except Exception as e:
         st.error(f"Error reading file: {e}")
         return None
-    
+ 
 
+
+
+# # # # #    D A T A F R A M E    T O    C S V    # # # # #
 def DF_TO_STR(df):
-    """Converts a pandas DataFrame to a string.
-
-    Args:
-        df (pandas.DataFrame): The DataFrame to convert.
-
-    Returns:
-        str: A string representation of the DataFrame,
-             or an empty string if the input is not a DataFrame.
-    """
     if isinstance(df, pd.DataFrame):
         return df.to_csv(index=False)
     else:
         print("Error: Input is not a pandas DataFrame.")
         return ""
 
+
+
+
+# # # # #    D O C X    C O N V E R T E R    # # # # #
 def GET_DOCX(CONTENT):
     document = Document()
     document.add_paragraph(CONTENT)
